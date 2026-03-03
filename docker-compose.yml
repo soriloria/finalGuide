@@ -24,6 +24,8 @@ services:
     build: ./ui
     expose:
       - "80"
+    env_file:
+      - ./ui/.env
     restart: always
 
   nginx:
