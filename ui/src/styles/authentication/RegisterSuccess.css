@@ -1,0 +1,116 @@
+.success-card {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  padding: 40px;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.success-card h2 {
+  font-size: 26px;
+  color: #16a34a;
+}
+
+.success-card p {
+  font-size: 16px;
+  color: #374151;
+}
+
+.note {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.home-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.home-btn:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .success-card {
+    padding: 25px;
+    margin-top: 50px;
+    width: 90%;
+    max-width: 310px;
+  }
+  .success-card h2 {
+    font-size: 22px;
+  }
+  .success-card p {
+    font-size: 17px;
+    margin-top: 0px;
+  }
+
+  .note{
+    margin-top: 0px;
+  }
+
+}
+
+@media (max-width: 412px) {
+  .success-card {
+    margin-top: 35px;
+    max-width: 290px;
+  }
+  .success-card h2 {
+    font-size: 20px;
+  }
+
+    .success-card p {
+      font-size: 16px;
+    }
+
+}
+
+
+@media (max-width: 390px) {
+  .success-card {
+    padding: 20px;
+    margin-top: 10px;
+    max-width: 270px;
+  }
+  .success-card h2 {
+    font-size: 19px;
+  }
+
+  .success-card p {
+    font-size: 15px;
+  }
+
+  .home-btn{
+    padding: 8px 20px;
+    font-size: 15px;
+  }
+
+}
+
+@media (max-width: 375px) {
+  .success-card {
+    max-width: 260px;
+  }
+  .success-card h2 {
+    font-size: 18px;
+  }
+
+  .success-card p {
+    font-size: 14px;
+  }
+
+}

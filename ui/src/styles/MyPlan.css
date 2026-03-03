@@ -1,0 +1,389 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+.my-plan-page {
+  min-height: calc(100vh - 69px);
+  background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+}
+
+.my-plan-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.my-plan-container h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.zones-table {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.zone-card {
+  padding: 15px 20px;
+  border-radius: 12px;
+  background-color: #f8f8f8;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.zone-header {
+  display: flex;
+  transition: opacity 0.6s ease;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zone-header h3 {
+  font-size: 20px;
+  margin: 0;
+  transition: opacity 0.2s ease;
+}
+
+
+.zone-header.expanded h3 {
+  opacity: 0.6;
+}
+
+.zone-complete {
+  font-size: 22px;
+  color: green;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: #ddd;
+  border-radius: 8px;
+  margin: 10px 0 15px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #4caf50;
+  width: 0%;
+  border-radius: 8px;
+  transition: width 0.4s ease;
+}
+
+.places-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s ease;
+}
+
+
+.places-list.expanded {
+  max-height: 285px;
+}
+
+.places-list li.visited {
+  color: green;
+}
+
+.places-list li.not-visited {
+  color: #555;
+}
+
+.places-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+
+.places-list li .place-name {
+  min-width: 150px;
+  flex-shrink: 0;
+  margin-left: 30px;
+  font-weight: bold;
+}
+
+
+.places-list li .place-buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  margin-right: 40px;
+}
+
+.places-list li .place-visit-btn {
+  width: 110px;
+  text-align: center;
+}
+
+
+.places-list li button {
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: white;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  min-width: 100px;
+}
+
+.places-list li button:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+}
+
+.plan-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.plan-empty button {
+  flex-shrink: 0;
+  align-self: center;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  white-space: nowrap;
+  margin-top: 30px;
+}
+
+.plan-empty button:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+}
+
+.plan-title {
+  border-bottom: 4px solid #2563eb;
+  padding-bottom: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 70px;
+  white-space: nowrap;
+}
+
+
+.plan-title2 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.plan-title2 .plan-name {
+  display: block;
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+.plan-name{
+    font-family: 'Caveat', cursive;
+}
+
+.city-name {
+  border-bottom: 4px solid #2563eb;
+}
+
+.plan-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 45px;
+  margin-bottom: 30px;
+  flex-wrap: nowrap;
+}
+
+.plan-buttons button {
+  padding: 7px 10px;
+  font-size: 16px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.plan-buttons button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Delete Plan */
+.plan-buttons button:nth-child(1) {
+  color: black;
+  background-color: #f06565;
+}
+
+.plan-buttons button:nth-child(1):hover {
+  background-color: #d84343;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Create New Plan */
+.plan-buttons button:nth-child(2) {
+  color: black;
+  background-color: #059669;
+}
+
+.plan-buttons button:nth-child(2):hover {
+  background-color: #047857;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Toggle Completed */
+.plan-buttons button:nth-child(3) {
+  color: black;
+  background-color: #059669;
+}
+
+.plan-buttons button:nth-child(3).completed {
+  background-color: #c8e6c9;
+  color: #065f46;
+  font-weight: bold;
+}
+
+
+.plan-buttons button:nth-child(3):hover {
+  background-color: #047857;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.plan-buttons button:nth-child(3).completed:hover {
+  background-color: #9ccc65;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.completed-msg {
+  text-align: center;
+  font-weight: bold;
+  color: green;
+  margin-top: 25px;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+
+  .info-modal-title{
+     font-size: 20px;
+  }
+
+  .city-name{
+    font-size: 24px;
+  }
+
+  .plan-title2 .plan-name{
+    font-size: 20px;
+  }
+
+  .plan-title2{
+     margin-top: 0px;
+  }
+  .my-plan-container{
+    max-width: 350px;
+  }
+
+  .places-list li .place-name {
+      min-width: 100px;
+      margin-left: 0px;
+      font-size: 15px;
+    }
+
+  .places-list li .place-buttons {
+      display: flex;
+      gap: 5px;
+      margin-right: 0px;
+    }
+
+  .places-list li .place-visit-btn {
+      width: 30px;
+    }
+
+  .places-list li button {
+      min-width: 30px;
+}
+
+  .plan-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+
+  .plan-buttons button:nth-child(1) { /* Delete plan */
+    order: 3;
+  }
+  .plan-buttons button:nth-child(2) { /* Create new */
+    order: 2;
+  }
+  .plan-buttons button:nth-child(3) { /* Toggle completed */
+    order: 1;
+  }
+
+  .plan-buttons button {
+    width: 80%;
+  }
+
+  .completed-msg {
+      white-space: normal;
+    }
+
+}
+
+
+@media (max-width: 390px) {
+
+  .city-name{
+    font-size: 20px;
+  }
+
+.plan-title2 .plan-name{
+    font-size: 19px;
+  }
+
+  .zone-header h3 {
+    font-size: 17px;
+  }
+
+    .places-list li .place-name {
+        font-size: 14px;
+    }
+
+  .plan-title {
+    font-size: 24px;
+  }
+
+}

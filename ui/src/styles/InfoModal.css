@@ -1,0 +1,138 @@
+/* ================= INFO MODAL ================= */
+.info-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 0 16px 15vh;
+}
+
+
+.info-modal-content {
+  background-color: #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 30px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info-modal-title {
+  font-size: 22px;
+  margin: 0;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.info-modal-message {
+  font-size: 16px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* 🔘 Buttons row */
+.info-modal-button-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.info-modal-confirm {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  background-color: #059669;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.info-modal-confirm:hover {
+  background-color: #047857;
+  transform: scale(1.05);
+}
+
+.info-modal-confirm.info-modal-cancel {
+  background-color: #f06565;
+  color: #111;
+}
+
+.info-modal-confirm.info-modal-cancel:hover {
+  background-color: #d84343;
+  transform: scale(1.05);
+}
+
+
+/* ❌ Close icon */
+.info-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #111;
+}
+
+.info-modal-close:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 480px) {
+
+  .info-modal-content .info-modal-title{
+     font-size: 24px;
+     margin: 0px;
+  }
+}
+
+@media (max-width: 390px) {
+    .info-modal-overlay{
+       padding: 0 50px 15vh;
+    }
+}
+
+
+@media (max-width: 375px) {
+    .info-modal-overlay{
+       padding: 0px 0px 0px 0vh;
+       margin-right: 0px;
+    }
+
+    .info-modal-content .info-modal-button-wrapper {
+      gap: 15px;
+      width: 80%;
+      margin-left: 28px;
+    }
+
+    .info-modal-content .info-modal-close {
+        top: 0;
+        right: 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .info-modal-overlay{
+       padding: 0px 0px 0vh;
+       margin-right: 0px;
+    }
+
+    .info-modal-content .info-modal-button-wrapper {
+      gap: 15px;
+      width: 80%;
+      margin-left: 28px;
+    }
+}
