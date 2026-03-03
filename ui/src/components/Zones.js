@@ -235,26 +235,21 @@ useEffect(() => {
   }, [placeMarkers]);
 
 /* ================== MAP HELPERS ================== */
-const centerCity = useCallback(async (cityName) => {
-  if (!googleMap.current) return;
+const centerCity = useCallback((cityName) => {
+  if (!googleMap.current || !window.google) return;
 
-  try {
-    const response = await fetch(
-  `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${process.env.REACT_APP_GOOGLE_MAPS_KEY}`
-  );
-    const data = await response.json();
+  const geocoder = new window.google.maps.Geocoder();
 
-    if (data.results?.length) {
-      const location = data.results[0].geometry.location;
-      googleMap.current.setCenter({
-        lat: location.lat,
-        lng: location.lng,
-      });
+  geocoder.geocode({ address: cityName }, (results, status) => {
+    if (status === "OK" && results[0]) {
+      const location = results[0].geometry.location;
+
+      googleMap.current.setCenter(location);
       googleMap.current.setZoom(getInitialZoom());
+    } else {
+      console.error("Geocode failed:", status);
     }
-  } catch (error) {
-    console.error('Error geocoding city:', error);
-  }
+  });
 }, []);
 
 
