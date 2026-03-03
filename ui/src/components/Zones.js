@@ -304,7 +304,7 @@ const initMap = useCallback(async () => {
     googleMap.current = new google.maps.Map(mapRef.current, {
       zoom: getInitialZoom(),
       center: { lat: 0, lng: 0 }, // тимчасово, пізніше центр задає centerCity
-      mapId: '71641e024725799ea746aa5b', // <- твій Map ID
+      mapId: 'a5a57a15f57edb6fd19e23b6', // <- твій Map ID
     });
 
 
