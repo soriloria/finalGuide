@@ -297,14 +297,16 @@ const initMap = useCallback(async () => {
 
     googleMap.current = new google.maps.Map(mapRef.current, {
       zoom: getInitialZoom(),
-      center: { lat: 0, lng: 0 }, // тимчасово, пізніше центр задає centerCity
-      mapId: '71641e024725799ea746aa5b', // <- твій Map ID
+      center: { lat: 0, lng: 0 },
+      mapId: '71641e024725799ea746aa5b',
     });
 
+    google.maps.event.addListenerOnce(googleMap.current, "idle", async () => {
+      await fetchInitialData();
+    });
 
     mapInitialized.current = true;
 
-    await fetchInitialData();
   } catch (e) {
     console.error('Google Maps init error:', e);
   }
