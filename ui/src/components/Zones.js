@@ -292,22 +292,52 @@ const initMap = useCallback(async () => {
   if (document.visibilityState !== 'visible') return;
 
   try {
-    const google = await loadGoogleMaps();
+    // Завантажуємо Google Maps API
+    await loadGoogleMaps();
 
-    googleMap.current = new google.maps.Map(mapRef.current, {
+    // Створюємо карту
+    googleMap.current = new window.google.maps.Map(mapRef.current, {
       zoom: getInitialZoom(),
-      center: { lat: 0, lng: 0 }, // тимчасово, пізніше центр задає centerCity
-      mapId: '71641e024725799ea746aa5b', // <- твій Map ID
+      center: { lat: 0, lng: 0 }, // тимчасово
+      mapId: '71641e024725799ea746aa5b', // твій Map ID
     });
-
 
     mapInitialized.current = true;
 
-    await fetchInitialData();
+    // Завантажуємо міста та зони
+    const [citiesRes, zonesRes] = await Promise.all([
+      Api.get('/cities/'),
+      Api.get('/zones/'),
+    ]);
+
+    setCities(citiesRes.data);
+    setAllZones(zonesRes.data);
+
+    // Визначаємо початкове місто
+    const savedCityId = localStorage.getItem('selectedCity');
+    const initialCity =
+      citiesRes.data.find(c => c.id.toString() === savedCityId) ||
+      citiesRes.data[0];
+
+    if (initialCity) {
+      setSelectedCity(initialCity.id.toString());
+      localStorage.setItem('selectedCity', initialCity.id.toString());
+
+      // Центруємо карту на обраному місті
+      centerCity(initialCity.name);
+
+      // Фільтруємо зони та завантажуємо маркери
+      filterZones(initialCity.id, zonesRes.data);
+      await fetchPlaces(initialCity.id);
+    }
+
+    // Перевіряємо план
+    await checkPlan();
+
   } catch (e) {
     console.error('Google Maps init error:', e);
   }
-}, [fetchInitialData]);
+}, [centerCity, checkPlan, fetchPlaces]);
 
 
 useEffect(() => {
