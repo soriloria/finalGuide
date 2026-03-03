@@ -7,7 +7,6 @@ import { createPortal } from "react-dom";
 
 
 /* ================= GOOGLE MAPS LOADER ================= */
-const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 let googleMapsPromise = null;
 
 const loadGoogleMaps = () => {
@@ -28,7 +27,7 @@ const loadGoogleMaps = () => {
     }
 
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places,marker`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_KEY}&libraries=places,marker`;
     script.async = true;
     script.defer = true;
 
@@ -241,7 +240,7 @@ const centerCity = useCallback(async (cityName) => {
 
   try {
     const response = await fetch(
-  `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${GOOGLE_MAPS_KEY}`
+  `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${process.env.REACT_APP_GOOGLE_MAPS_KEY}`
   );
     const data = await response.json();
 
