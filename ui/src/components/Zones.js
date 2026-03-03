@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 
 
 /* ================= GOOGLE MAPS LOADER ================= */
+const GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY;
 let googleMapsPromise = null;
 
 const loadGoogleMaps = () => {
@@ -27,7 +28,7 @@ const loadGoogleMaps = () => {
     }
 
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_KEY}&libraries=places,marker`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_KEY}&libraries=places,marker`;
     script.async = true;
     script.defer = true;
 
@@ -235,21 +236,26 @@ useEffect(() => {
   }, [placeMarkers]);
 
 /* ================== MAP HELPERS ================== */
-const centerCity = useCallback((cityName) => {
-  if (!googleMap.current || !window.google) return;
+const centerCity = useCallback(async (cityName) => {
+  if (!googleMap.current) return;
 
-  const geocoder = new window.google.maps.Geocoder();
+  try {
+    const response = await fetch(
+  `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${GOOGLE_MAPS_KEY}`
+  );
+    const data = await response.json();
 
-  geocoder.geocode({ address: cityName }, (results, status) => {
-    if (status === "OK" && results[0]) {
-      const location = results[0].geometry.location;
-
-      googleMap.current.setCenter(location);
+    if (data.results?.length) {
+      const location = data.results[0].geometry.location;
+      googleMap.current.setCenter({
+        lat: location.lat,
+        lng: location.lng,
+      });
       googleMap.current.setZoom(getInitialZoom());
-    } else {
-      console.error("Geocode failed:", status);
     }
-  });
+  } catch (error) {
+    console.error('Error geocoding city:', error);
+  }
 }, []);
 
 
@@ -273,7 +279,7 @@ const fetchInitialData = useCallback(async () => {
       setSelectedCity(initialCity.id.toString());
       localStorage.setItem('selectedCity', initialCity.id.toString());
 
-      centerCity(initialCity.name);
+      await centerCity(initialCity.name);
       filterZones(initialCity.id, zonesRes.data);
       await fetchPlaces(initialCity.id);
     }
@@ -297,16 +303,14 @@ const initMap = useCallback(async () => {
 
     googleMap.current = new google.maps.Map(mapRef.current, {
       zoom: getInitialZoom(),
-      center: { lat: 0, lng: 0 },
-      mapId: '71641e024725799ea746aa5b',
+      center: { lat: 0, lng: 0 }, // тимчасово, пізніше центр задає centerCity
+      mapId: '71641e024725799ea746aa5b', // <- твій Map ID
     });
 
-    google.maps.event.addListenerOnce(googleMap.current, "idle", async () => {
-      await fetchInitialData();
-    });
 
     mapInitialized.current = true;
 
+    await fetchInitialData();
   } catch (e) {
     console.error('Google Maps init error:', e);
   }
@@ -362,7 +366,7 @@ const toggleZone = (zoneName) => {
     const city = cities.find(c => c.id.toString() === cityId);
     if (!city) return;
 
-    centerCity(city.name);
+    await centerCity(city.name);
     filterZones(city.id, allZones);
     setActiveZones([]);
     await fetchPlaces(city.id);
