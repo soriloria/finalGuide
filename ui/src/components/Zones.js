@@ -273,7 +273,7 @@ const fetchInitialData = useCallback(async () => {
       setSelectedCity(initialCity.id.toString());
       localStorage.setItem('selectedCity', initialCity.id.toString());
 
-      await centerCity(initialCity.name);
+      centerCity(initialCity.name);
       filterZones(initialCity.id, zonesRes.data);
       await fetchPlaces(initialCity.id);
     }
@@ -360,7 +360,7 @@ const toggleZone = (zoneName) => {
     const city = cities.find(c => c.id.toString() === cityId);
     if (!city) return;
 
-    await centerCity(city.name);
+    centerCity(city.name);
     filterZones(city.id, allZones);
     setActiveZones([]);
     await fetchPlaces(city.id);
