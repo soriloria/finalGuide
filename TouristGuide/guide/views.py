@@ -33,7 +33,8 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
         user.is_active = False
         user.save()
-        FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+        FRONTEND_URL = os.getenv("FRONTEND_URL")
+        DEFAULT_FROM_EMAIL = os.getenv("EMAIL_DEFAULT_FROM")
         signer = TimestampSigner()
         token = signer.sign(user.pk)
         activation_link = f"{FRONTEND_URL}/#/activate/{token}"
@@ -67,7 +68,7 @@ class RegisterView(generics.CreateAPIView):
         send_mail(
             subject="🌍 Activate your Tourist Guide account!",
             message=f"Please activate your account: {activation_link}",  # plain text fallback
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email=DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
             fail_silently=False,
             html_message=html_message
@@ -96,7 +97,8 @@ class PasswordResetView(APIView):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
-        FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+        FRONTEND_URL = os.getenv("FRONTEND_URL")
+        DEFAULT_FROM_EMAIL = os.getenv("EMAIL_DEFAULT_FROM")
 
         try:
             user = User.objects.get(email=email)
@@ -139,7 +141,7 @@ class PasswordResetView(APIView):
             send_mail(
                 subject="🔒 Reset your Tourist Guide password",
                 message=f"Reset your password: {reset_link}",  # plain text fallback
-                from_email=settings.DEFAULT_FROM_EMAIL,
+                from_email=DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
                 fail_silently=False,
                 html_message=html_message
