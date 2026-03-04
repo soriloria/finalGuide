@@ -33,17 +33,44 @@ class RegisterView(generics.CreateAPIView):
         user = serializer.save()
         user.is_active = False
         user.save()
-        FRONTEND_URL = os.getenv("FRONTEND_URL")
+        FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
         signer = TimestampSigner()
         token = signer.sign(user.pk)
         activation_link = f"{FRONTEND_URL}/#/activate/{token}"
 
+        # HTML лист
+        html_message = f"""
+        <html>
+          <body style="font-family: Arial, sans-serif; line-height:1.5; color:#2c3e50;">
+            <h2 style="color: #3498db;">🌍 Welcome to Tourist Guide!</h2>
+            <p>Hi {user.username},</p>
+            <p>Thank you for registering! Please activate your account by clicking the button below:</p>
+            <p style="text-align:center;">
+              <a href="{activation_link}" style="
+                  display:inline-block;
+                  padding:12px 20px;
+                  background-color:#3498db;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:5px;
+                  font-weight:bold;
+              ">Activate Account</a>
+            </p>
+            <p>If the button doesn’t work, copy and paste this link into your browser:</p>
+            <p><a href="{activation_link}">{activation_link}</a></p>
+            <hr>
+            <p style="font-size:12px; color:#7f8c8d;">Tourist Guide Team</p>
+          </body>
+        </html>
+        """
+
         send_mail(
-            "Account activation Tourist Guide",
-            f"Please follow the link to activate your account on Tourist Guide: {activation_link}",
-            None,
-            [user.email],
-            fail_silently=True
+            subject="🌍 Activate your Tourist Guide account!",
+            message=f"Please activate your account: {activation_link}",  # plain text fallback
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+            html_message=html_message
         )
 
     def create(self, request, *args, **kwargs):
@@ -69,7 +96,7 @@ class PasswordResetView(APIView):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
-        FRONTEND_URL = os.getenv("FRONTEND_URL")
+        FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
         try:
             user = User.objects.get(email=email)
@@ -83,15 +110,43 @@ class PasswordResetView(APIView):
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
             reset_link = f"{FRONTEND_URL}/#/reset-password/{uid}/{token}"
+
+            html_message = f"""
+            <html>
+              <body style="font-family: Arial, sans-serif; line-height:1.5; color:#2c3e50;">
+                <h2 style="color: #e67e22;">🔒 Password Reset Request</h2>
+                <p>Hi {user.username},</p>
+                <p>We received a request to reset your password. Click the button below to reset it:</p>
+                <p style="text-align:center;">
+                  <a href="{reset_link}" style="
+                      display:inline-block;
+                      padding:12px 20px;
+                      background-color:#e67e22;
+                      color:white;
+                      text-decoration:none;
+                      border-radius:5px;
+                      font-weight:bold;
+                  ">Reset Password</a>
+                </p>
+                <p>If the button doesn’t work, copy and paste this link into your browser:</p>
+                <p><a href="{reset_link}">{reset_link}</a></p>
+                <hr>
+                <p style="font-size:12px; color:#7f8c8d;">Tourist Guide Team</p>
+              </body>
+            </html>
+            """
+
             send_mail(
-                "Password reset Tourist Guide",
-                f"Please follow the link to reset your password on Tourist Guide: {reset_link}",
-                None,
-                [user.email],
-                fail_silently=True
+                subject="🔒 Reset your Tourist Guide password",
+                message=f"Reset your password: {reset_link}",  # plain text fallback
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+                html_message=html_message
             )
 
         except User.DoesNotExist:
+            # Ми не повідомляємо користувача, щоб не розкривати емейли
             pass
 
         return Response(
