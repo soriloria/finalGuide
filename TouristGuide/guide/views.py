@@ -151,19 +151,19 @@ class MyTokenObtainPairView(TokenObtainPairView):
 # --------------------------
 # City & Zone & Place
 # --------------------------
-class CityViewSet(viewsets.ModelViewSet):
+class CityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     permission_classes = [permissions.AllowAny]
 
 
-class ZoneViewSet(viewsets.ModelViewSet):
+class ZoneViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Zone.objects.all()
     serializer_class = ZoneSerializer
     permission_classes = [permissions.AllowAny]
 
 
-class PlaceViewSet(viewsets.ModelViewSet):
+class PlaceViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Place.objects.all()
     serializer_class = PlaceSerializer
     permission_classes = [permissions.AllowAny]
@@ -177,51 +177,39 @@ class PlaceViewSet(viewsets.ModelViewSet):
 
 
 # --------------------------
-class PlanViewSet(viewsets.ModelViewSet):
+class PlanViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PlanSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Plan.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
-
-class ProgressViewSet(viewsets.ModelViewSet):
+class ProgressViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Progress.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
-
-class SelectedPlaceViewSet(viewsets.ModelViewSet):
+class SelectedPlaceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SelectedPlaceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return SelectedPlace.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
-
-class CustomRouteViewSet(viewsets.ModelViewSet):
+class CustomRouteViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CustomRouteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return CustomRoute.objects.filter(user=self.request.user)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
 
-
-class RoutePlaceViewSet(viewsets.ModelViewSet):
+class RoutePlaceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RoutePlaceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
