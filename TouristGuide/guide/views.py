@@ -39,7 +39,7 @@ class RegisterView(generics.CreateAPIView):
         token = signer.sign(user.pk)
         activation_link = f"{FRONTEND_URL}/#/activate/{token}"
 
-        # HTML лист
+        # HTML
         html_message = f"""
         <html>
           <body style="font-family: Arial, sans-serif; line-height:1.5; color:#2c3e50;">
@@ -148,7 +148,7 @@ class PasswordResetView(APIView):
             )
 
         except User.DoesNotExist:
-            # Ми не повідомляємо користувача, щоб не розкривати емейли
+
             pass
 
         return Response(
