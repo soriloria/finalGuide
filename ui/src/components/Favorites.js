@@ -208,7 +208,7 @@ const handleShowOnMap = (lat, lng) => {
       <>
         <h2 className="favs-title">Favorites</h2>
         {Object.entries(groupedByCity)
-          .sort((a, b) => b[1].length - a[1].length) // 🔥 сортування міст
+          .sort((a, b) => b[1].length - a[1].length)
           .map(([city, places]) => {
             const sortedPlaces = places.slice().sort((a, b) => b.favId - a.favId);
 
