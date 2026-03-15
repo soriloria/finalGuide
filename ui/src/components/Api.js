@@ -6,7 +6,7 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// додаємо токен у кожен запит
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access");
   if (token) {
@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// автоматичне оновлення токена
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -37,7 +37,7 @@ api.interceptors.response.use(
       }
 
       try {
-        // використовуємо api замість axios.axios
+
         const res = await api.post("token/refresh/", { refresh: refreshToken });
 
         localStorage.setItem("access", res.data.access);
@@ -55,7 +55,7 @@ api.interceptors.response.use(
   }
 );
 
-// автоматичне оновлення токена кожні 4 хвилини
+
 const startAutoRefresh = () => {
   setInterval(async () => {
     const refreshToken = localStorage.getItem("refresh");
