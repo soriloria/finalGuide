@@ -108,7 +108,7 @@ export default function Homepage() {
           <p>Loading...</p>
         ) : (
           <div className="carousel-wrapper">
-            {/* Стрілки ПК */}
+
             {!isMobile && showCarousel && (
               <button className="arrow left" onClick={() => scroll("left")}>➞</button>
             )}
@@ -150,7 +150,7 @@ export default function Homepage() {
               ))}
             </div>
 
-            {/* Стрілки ПК */}
+
             {!isMobile && showCarousel && (
               <button className="arrow right" onClick={() => scroll("right")}>➞</button>
             )}
