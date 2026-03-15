@@ -138,12 +138,11 @@ useEffect(() => {
     }
   }, []);
 
-  /* MARKERS!!!!!!!!!!!! =====================================================  */
 
   const placeMarkers = useCallback(async (placesData) => {
   if (!googleMap.current || !window.google) return;
 
-  // Очистка старих маркерів
+
   markersRef.current.forEach(marker => marker.map = null);
   markersRef.current = [];
 
@@ -292,19 +291,18 @@ const initMap = useCallback(async () => {
   if (document.visibilityState !== 'visible') return;
 
   try {
-    // Завантажуємо Google Maps API
+
     await loadGoogleMaps();
 
-    // Створюємо карту
     googleMap.current = new window.google.maps.Map(mapRef.current, {
       zoom: getInitialZoom(),
-      center: { lat: 0, lng: 0 }, // тимчасово
-      mapId: process.env.REACT_APP_GOOGLE_MAP_ID, // твій Map ID
+      center: { lat: 0, lng: 0 },
+      mapId: process.env.REACT_APP_GOOGLE_MAP_ID,
     });
 
     mapInitialized.current = true;
 
-    // Завантажуємо міста та зони
+
     const [citiesRes, zonesRes] = await Promise.all([
       Api.get('/cities/'),
       Api.get('/zones/'),
@@ -313,7 +311,7 @@ const initMap = useCallback(async () => {
     setCities(citiesRes.data);
     setAllZones(zonesRes.data);
 
-    // Визначаємо початкове місто
+
     const savedCityId = localStorage.getItem('selectedCity');
     const initialCity =
       citiesRes.data.find(c => c.id.toString() === savedCityId) ||
@@ -323,15 +321,15 @@ const initMap = useCallback(async () => {
       setSelectedCity(initialCity.id.toString());
       localStorage.setItem('selectedCity', initialCity.id.toString());
 
-      // Центруємо карту на обраному місті
+
       centerCity(initialCity.name);
 
-      // Фільтруємо зони та завантажуємо маркери
+
       filterZones(initialCity.id, zonesRes.data);
       await fetchPlaces(initialCity.id);
     }
 
-    // Перевіряємо план
+
     await checkPlan();
 
   } catch (e) {
