@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('secure-management-3228js9/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('api/', include('guide.urls')),
 ]
 
